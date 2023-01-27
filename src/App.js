@@ -10,9 +10,7 @@ const FILTER_MAP = {
   Complete: (task) => task.completed
 }
 
-const FILTER_NAME = Object.keys(FILTER_MAP);
-console.log(FILTER_NAME, "difilter")
-
+const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks)
@@ -31,7 +29,6 @@ function App(props) {
       return task;
     })
     setTasks(updatedTasks)
-    console.log(id, "ya")
   }
 
   function editTask(id, newName) {
@@ -49,7 +46,9 @@ function App(props) {
     setTasks(remainingTasks)
   }
 
-  const taskList = tasks?.map((task) => (
+  const taskList = tasks
+  .filter(FILTER_MAP[filter])
+  .map((task) => (
     <Todo
       key={task.id}
       id={task.id}
@@ -61,7 +60,7 @@ function App(props) {
        />)
   )
 
-  const filterList = FILTER_NAME?.map((name) =>  (
+    const filterList = FILTER_NAMES?.map((name) =>  (
     <FilterButton 
       key={name} 
       name={name}

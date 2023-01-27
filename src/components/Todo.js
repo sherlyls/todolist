@@ -1,8 +1,11 @@
-import React, {useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 
 const Todo = (props) => {
     const [newName, setNewName] = useState('')
     const [isEditing, setEditing] = useState(false);
+
+    const editFieldRef = useRef(null);
+    const editButtonRef = useRef(null)
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -27,6 +30,7 @@ const Todo = (props) => {
                 type="text" 
                 value={newName}
                 onChange={handleChange}
+                ref={editFieldRef}
                 
                 />
           </div>
@@ -63,7 +67,9 @@ const Todo = (props) => {
               <button 
                 type="button" 
                 className="btn"
-                onClick={() => setEditing(true)}>
+                onClick={() => setEditing(true)}
+                ref={editButtonRef}
+                >
                 Edit <span className="visually-hidden">{props.name}</span>
               </button>
               <button
@@ -76,6 +82,12 @@ const Todo = (props) => {
             </div>
         </div>
       );
+
+      useEffect(() => {
+        if (isEditing) {
+          editFieldRef.current.focus()
+        }
+      }, [isEditing]);
 
     return (
         <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>
